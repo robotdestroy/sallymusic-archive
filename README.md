@@ -1,6 +1,6 @@
 # SallyMusic.com — static archive
 
-A restoration of Sally’s late-2007 paper collage website. The actual archived homepage HTML, original stylesheet, backgrounds, artwork and animated crow anchor the visual reconstruction. A small archive menu opens recovered news, biographies, discography, lyrics, media descriptions and 70 real gigography entries.
+A restoration of Sally’s late-2007 paper collage website. The actual archived homepage HTML, original stylesheet, backgrounds, artwork and animated crow anchor the visual reconstruction. A small archive menu opens recovered news, biographies, discography, lyrics, media descriptions and 70 real gigography entries. Ten original Sally Radio MP3 files play using browser-native audio controls.
 
 The intended public site is **site/**. GitHub Pages should serve that directory, using the included Actions workflow. There is no server, database, dependency installation, analytics, executable legacy PHP or Flash. No current website or domain configuration is used.
 

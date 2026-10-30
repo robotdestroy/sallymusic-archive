@@ -42,3 +42,5 @@ a:focus-visible {outline:2px solid #600;outline-offset:3px}
 
 .mobile-menu {display:none}
 @media(max-width:899px){.mobile-menu{display:flex;flex-wrap:wrap;gap:8px 16px;padding:8px 2px 14px}.mobile-menu a{text-decoration:underline}}
+
+.track{padding:4px 0 12px;border-bottom:1px dashed #777}.track audio{width:100%;max-width:310px;margin-top:8px}
