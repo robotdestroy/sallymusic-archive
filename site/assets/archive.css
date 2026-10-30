@@ -1,0 +1,44 @@
+/* Minimal restoration additions. Original 2007 desktop geometry stays in sallymusic.css. */
+.archive-nav {margin:22px 8px 0; padding-top:10px; border-top:1px dashed #333; line-height:1.5}
+.archive-nav h3 {font:18px Georgia,serif;color:#600}
+.archive-nav ul {list-style:none;margin:8px 0;padding:0}
+.archive-nav a {text-decoration:underline}
+.archive-notice {clear:both; width:590px; margin:16px 0 0 20px; padding-bottom:20px; font-size:10px;line-height:1.5}
+.archive-notice a {text-decoration:underline}
+.reading .content {padding:10px}
+.reading h1 {font-size:22px;margin-bottom:16px;color:#600}
+.reading h2 {font-size:18px;margin:24px 0 12px;color:#600}
+.reading h3 {font-size:16px;margin:24px 0 10px;color:#600}
+.reading h4 {font-size:14px;margin:18px 0 8px}
+.reading p {line-height:1.45}
+.reading a {text-decoration:underline;overflow-wrap:anywhere}
+.reading li {line-height:1.45}
+.reading ul {padding-left:19px}
+.reading hr {border:0;border-top:1px dashed #555;margin:24px 0}
+.section-note {font-size:11px;line-height:1.5;border-bottom:1px dashed #777;padding-bottom:14px}
+.unavailable {font-size:11px;font-style:italic}
+a:focus-visible {outline:2px solid #600;outline-offset:3px}
+@media(max-width:899px) {
+ body {background-position:left top}
+ #mainwrapper {width:auto;padding:0 12px;background-position:-140px top}
+ #wrapper {width:100%}
+ #header {height:230px;margin:0 -12px;padding:0;background-size:auto 230px;background-position:0 top}
+ #header table {position:absolute;right:14px;top:10px}
+ #header table tr:nth-child(2) {display:none}
+ #container {width:auto;float:none;margin:0;padding:5px 0}
+ .content {margin:0;padding:10px}
+ #sidebarcontainer {float:none;width:auto;margin:25px 0 0;padding-top:69px;background-position:left top}
+ #sidebarcontainer .sidebardl {max-width:320px}
+ #sidebarcontainer>img {display:none}
+ .archive-nav {margin:18px 0}
+ .archive-nav ul {display:flex;flex-wrap:wrap;gap:8px 16px}
+ #footer {width:auto;margin:0;padding:0}
+ .archive-notice {width:auto;margin:14px 0 0;font-size:11px}
+ .clearing {width:auto;height:16px}
+ .reading .content {padding:10px}
+}
+/* Quirks-era tables used the browser's 16px default despite the 12px body. */
+#header table {font-size:16px}
+
+.mobile-menu {display:none}
+@media(max-width:899px){.mobile-menu{display:flex;flex-wrap:wrap;gap:8px 16px;padding:8px 2px 14px}.mobile-menu a{text-decoration:underline}}
