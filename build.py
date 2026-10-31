@@ -54,7 +54,7 @@ def link(u):
    return ('shows.html' if i in ['230','231','234'] else 'item-'+i+'.html')
   path=p.path.lower()
   if 'newsletter' in path or 'memberid' in q:return 'services.html'
-  if path in ['/','/cms/','/cms/index.php','index.php','']:return 'index.html'
+  if path in ['/','/cms/','/cms/index.php','index.php','']:return 'html-site.html'
   if 'merch' in u or 'buy' in u:return 'merchandise.html'
   name=path.rsplit('/',1)[-1]
   if name in legacy:return legacy[name]
@@ -80,7 +80,7 @@ def clean(s):
  d=DOM(s);scrub(d.root)
  return d.root.html()
 def img(n,alt=''):return '<img src="assets/images/'+n+'" alt="'+escape(alt)+'">'
-nav='<nav class="archive-nav" aria-label="Archive sections"><h3>the archive</h3><ul><li><a href="index.html">2007 homepage</a></li><li><a href="radio.html">sally radio</a></li>'+''.join('<li><a href="'+v[0]+'">'+v[1]+'</a></li>' for v in sections.values())+'<li><a href="about.html">about this restoration</a></li></ul></nav>'
+nav='<nav class="archive-nav" aria-label="Archive sections"><h3>the archive</h3><ul><li><a href="index.html">Flash reconstruction</a></li><li><a href="html-site.html">2007 homepage</a></li><li><a href="radio.html">sally radio</a></li>'+''.join('<li><a href="'+v[0]+'">'+v[1]+'</a></li>' for v in sections.values())+'<li><a href="about.html">about this restoration</a></li></ul></nav>'
 original=DOM((SOURCE/'home.html').read_text())
 header=clean(original.root.find(id='header').html())
 # Preserve the original controls visually; replace their obsolete popup destinations.
@@ -91,11 +91,11 @@ footer='<div class="clearing"></div><div id="footer">'+img('footer_txt.gif','sal
 notice='<p class="archive-notice">SallyMusic.com · historical static archive · <a href="about.html">about / sources</a>. Old services are inactive.</p>'
 def page(name,title,body,home=False):
  content=body if home else '<div id="container" class="reading"><div class="content"><div class="contenttitle"><h2>'+escape(title)+'</h2></div><div class="contentbody">'+body+'</div></div></div>'
- html='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="A faithful static restoration of SallyMusic.com, the Chicago band’s archived website."><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'none'; connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'none'"><title>'''+escape(title)+' · SallyMusic.com archive</title><link rel="stylesheet" href="assets/sallymusic.css"><link rel="stylesheet" href="assets/archive.css"></head><body><div id="mainwrapper"><div id="wrapper">'+header+'<nav class="mobile-menu" aria-label="Quick archive navigation"><a href="index.html">home</a><a href="news.html">news archive</a><a href="shows.html">shows</a><a href="audio.html">audio</a><a href="about.html">about</a></nav>'+content+sidebar+footer+notice+'</div></div></body></html>'
+ html='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="A faithful static restoration of SallyMusic.com, the Chicago band’s archived website."><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'none'; connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'none'"><title>'''+escape(title)+' · SallyMusic.com archive</title><link rel="stylesheet" href="assets/sallymusic.css"><link rel="stylesheet" href="assets/archive.css"></head><body><div id="mainwrapper"><div id="wrapper">'+header+'<nav class="mobile-menu" aria-label="Quick archive navigation"><a href="html-site.html">home</a><a href="news.html">news archive</a><a href="shows.html">shows</a><a href="audio.html">audio</a><a href="about.html">about</a></nav>'+content+sidebar+footer+notice+'</div></div></body></html>'
  (SITE/name).write_text(html)
 
 # This is the actual captured homepage body, not re-created modern cards.
-page('index.html','sally — the band, from chicago, illinois',clean(original.root.find(id='container').html()),True)
+page('html-site.html','sally — the band, from chicago, illinois',clean(original.root.find(id='container').html()),True)
 # Broader reading sections carry their recovery metadata and explicit revision history.
 news=(CONTENT/'News.md').read_text()
 for source,(dest,title) in sections.items():
@@ -110,7 +110,7 @@ for source,(dest,title) in sections.items():
   global count
   count+=1;return '<h2 id="section-'+str(count)+'">'+m[1]+'</h2>'
  html=re.sub(r'<h2>(.*?)</h2>',heading,html,flags=re.S)
- html='<p class="section-note">Recovered reading room. This section combines surviving versions; the 2007 homepage retains its original layout. <a href="index.html">return home</a></p>'+html
+ html='<p class="section-note">Recovered reading room. This section combines surviving versions; the 2007 homepage retains its original layout. <a href="html-site.html">return home</a></p>'+html
  page(dest,title,html)
 # A safe browser-native replacement for the original Flash music player.
 tracks=[('goldielocks.mp3','goldie locks'),('watermelon.mp3','watermelon'),('clarks_on_lincoln.mp3','clarks on lincoln'),('abundantsunshine.mp3','abundant sunshine'),('thank_god_for_sunglasses.mp3','thank god for sunglasses'),('sunglasses128.mp3','sunglasses128 — alternate file'),('the_ungrateful_interlude.mp3','the ungrateful interlude'),('important.mp3','important'),('teach_me.mp3','teach me'),('guac.mp3','guac')]
