@@ -3,7 +3,7 @@ const root=new URL('../',import.meta.url),assets=new URL('assets/',import.meta.u
 const stage=document.querySelector('#stage'),panel=document.querySelector('#content-panel'),art=document.querySelector('#scene-art'),bugs=document.querySelector('#bugs'),music=document.querySelector('#music');
 const sections=['news','audio','pictures','bio','tour','merch','links'];
 // One visual playback rate shared with CSS. Native audio remains at its default 1× rate.
-const MOTION_SPEED=Number(getComputedStyle(document.documentElement).getPropertyValue('--motion-speed'))||.75;
+const MOTION_SPEED=Number(getComputedStyle(document.documentElement).getPropertyValue('--motion-speed'))||.5625;
 const VISUAL_FRAME_INTERVAL=1000/(31*MOTION_SPEED);
 const names={news:'news',audio:'audio',pictures:'pictures',bio:'biography',tour:'tour dates',merch:'merchandise',links:'links'};
 const routes={news:'news.html',audio:'radio.html',pictures:'audio.html',bio:'biography.html',tour:'shows.html',merch:'merchandise.html',links:'links.html'};
