@@ -34,4 +34,6 @@ Historical writing, photographs and artwork remain the property of their origina
 
 The homepage now reconstructs Sally’s original Flash 7 collage in modern HTML/CSS/JavaScript, using extracted original artwork and source-based navigation/movement. The earlier HTML fallback remains at [`html-site.html`](site/html-site.html), and every reading-archive URL is retained.
 
+The original hidden “Is this Mark Berlin?” recording is restored on the little blue figure dangling from the boy’s string in the news scene. The exact recovered MP3 plays through native browser controls in an accessible dialog. It loads on discovery and plays only on request; Close, Escape and browser Back dismiss it and pause playback. The dialog also has a shareable `#mark-berlin` URL. Visual motion remains at 56.25% of the initial reconstruction’s speed; audio stays at 1×.
+
 See [`reconstruction/SOURCES.md`](reconstruction/SOURCES.md) for chronology, matching Wayback hashes, exact asset/frame provenance and limitations. `reconstruction/build_data.py` prepares recovered prose for the experience. `build.py` rebuilds the HTML archive without replacing the reconstructed homepage. The main experience sources are `site/index.html` and `site/experience/`; there is no framework build or runtime dependency.

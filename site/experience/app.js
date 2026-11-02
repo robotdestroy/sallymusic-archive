@@ -1,6 +1,8 @@
 // Modern reconstruction. The SWF files and the reference emulator are never loaded here.
 const root=new URL('../',import.meta.url),assets=new URL('assets/',import.meta.url);
 const stage=document.querySelector('#stage'),panel=document.querySelector('#content-panel'),art=document.querySelector('#scene-art'),bugs=document.querySelector('#bugs'),music=document.querySelector('#music');
+const recordingHotspot=document.querySelector('#recording-hotspot'),recordingDialog=document.querySelector('#recording-dialog'),recording=document.querySelector('#hidden-recording');
+let recordingHistoryEntry=false;
 const sections=['news','audio','pictures','bio','tour','merch','links'];
 // One visual playback rate shared with CSS. Native audio remains at its default 1× rate.
 const MOTION_SPEED=Number(getComputedStyle(document.documentElement).getPropertyValue('--motion-speed'))||.5625;
@@ -15,6 +17,7 @@ function setScene(next,transition=true){
  if(!sections.includes(next))next='news';scene=next;stage.dataset.scene=next;art.src=new URL(next+'-scene.png',assets);panel.className='content-panel '+next;panel.setAttribute('aria-label','Recovered '+names[next]);document.title='Sally — '+names[next];
  if(transition&&motion){art.classList.remove('changing');requestAnimationFrame(()=>art.classList.add('changing'));}
  document.querySelector('#player-controls').hidden=next!=='audio';bugs.hidden=next!=='news';
+ recordingHotspot.hidden=next!=='news';
  if(next==='pictures'){
   panel.innerHTML='<p class="source-note">Recovered website photographs. Original album order and gallery feed are missing.</p><div class="gallery">'+data.photos.map((p,i)=>`<button data-photo="${i}" aria-label="Enlarge ${p.caption}"><img src="${new URL(p.file,assets)}" alt="${p.caption}" loading="lazy"></button>`).join('')+'</div>';
  }else if(next==='audio'){
@@ -24,7 +27,29 @@ function setScene(next,transition=true){
  document.querySelectorAll('[data-scene]').forEach(a=>{if(a instanceof HTMLAnchorElement){if(a.dataset.scene===next)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}});updatePlayer();
 }
 function choose(next){if(location.hash==='#'+next)setScene(next);else location.hash=next;}
-addEventListener('hashchange',()=>setScene(location.hash.slice(1)||'news'));
+function syncRoute(transition=true){
+ if(!data)return;
+ const route=location.hash.slice(1)||new URLSearchParams(location.search).get('sub')||'news';
+ if(route==='mark-berlin'){
+  setScene('news',transition);
+  if(!recording.src)recording.src=new URL('assets/audio/markberlin.mp3',root);
+  if(!recordingDialog.open)recordingDialog.showModal();
+ }else{
+  recordingHistoryEntry=false;
+  if(recordingDialog.open)recordingDialog.close();
+  setScene(route,transition);
+ }
+}
+addEventListener('hashchange',()=>syncRoute());
+recordingHotspot.addEventListener('click',()=>{recordingHistoryEntry=true;location.hash='mark-berlin';});
+function closeRecording(){
+ if(recordingHistoryEntry&&location.hash==='#mark-berlin')history.back();
+ else{history.replaceState(null,'','#news');syncRoute(false);}
+}
+document.querySelector('#close-recording').addEventListener('click',closeRecording);
+recordingDialog.addEventListener('cancel',e=>{e.preventDefault();closeRecording();});
+recordingDialog.addEventListener('close',()=>{recording.pause();if(scene==='news')recordingHotspot.focus({preventScroll:true});});
+recording.addEventListener('error',()=>document.querySelector('#recording-status').hidden=false);
 document.addEventListener('click',e=>{
  const a=e.target.closest('a[data-scene]');if(a){e.preventDefault();choose(a.dataset.scene);return;}
  const b=e.target.closest('[data-photo]');if(b){const p=data.photos[Number(b.dataset.photo)];document.querySelector('#large-photo').src=new URL(p.file,assets);document.querySelector('#large-photo').alt=p.caption;document.querySelector('#photo-caption').textContent=p.caption+' · source: '+p.file;document.querySelector('#photo-dialog').showModal();return;}
@@ -40,6 +65,7 @@ function nextTrack(direction){track=(track+direction+data.tracks.length)%data.tr
 document.querySelector('#global-audio').addEventListener('click',togglePlay);document.querySelector('#player-controls .play').addEventListener('click',togglePlay);document.querySelector('#player-controls .stop').addEventListener('click',stop);document.querySelector('#player-controls .previous').addEventListener('click',()=>nextTrack(-1));document.querySelector('#player-controls .next').addEventListener('click',()=>nextTrack(1));
 for(const event of ['play','pause','error'])music.addEventListener(event,updatePlayer);music.addEventListener('ended',()=>{track=(track+1)%data.tracks.length;loadTrack(true);});
 const ambient=document.querySelector('#ambient-track');ambient.volume=.3;
+recording.addEventListener('play',()=>{music.pause();ambient.pause();const b=document.querySelector('#ambience');b.setAttribute('aria-pressed','false');b.textContent='ambient sound off';});
 document.querySelector('#ambience').addEventListener('click',async e=>{const button=e.currentTarget;if(ambient.paused){try{await ambient.play();button.setAttribute('aria-pressed','true');button.textContent='ambient sound on';}catch{button.textContent='ambient sound unavailable';}}else{ambient.pause();button.setAttribute('aria-pressed','false');button.textContent='ambient sound off';}});
 function applyMotion(){stage.classList.toggle('still',!motion);const b=document.querySelector('#motion');b.setAttribute('aria-pressed',String(!motion));b.textContent=motion?'pause motion':'resume motion';if(!motion){clearTimeout(arrivalTimer);document.querySelector('#arrival').hidden=true;stage.classList.remove('arriving');panel.classList.remove('arriving');}}
 document.querySelector('#motion').addEventListener('click',()=>{motion=!motion;applyMotion();});
@@ -53,4 +79,4 @@ for(const [i,key] of ['audio','bio','links','tour','merch','pictures'].entries()
 }
 function animate(now){requestAnimationFrame(animate);if(now-last<VISUAL_FRAME_INTERVAL)return;last=now-((now-last)%VISUAL_FRAME_INTERVAL);for(const b of flying){if(motion&&scene==='news'&&!b.hover&&!document.hidden){if(Math.hypot(b.tx-b.x,b.ty-b.y)>b.speed){b.x+=b.dx;b.y+=b.dy;}else target(b);b.frame=(b.frame+1)%6;b.img.src=new URL('bug-'+(b.frame+1)+'.png',assets);}b.a.style.transform=`translate(${b.x-60}px,${b.y-55}px) scale(${b.hover?1:b.scale})`;}}
 requestAnimationFrame(animate);applyMotion();
-try{const response=await fetch(new URL('data.json',import.meta.url));if(!response.ok)throw Error('content');data=await response.json();setScene(location.hash.slice(1)||new URLSearchParams(location.search).get('sub')||'news',false);if(!location.hash)arrive();}catch{panel.innerHTML='<p>The recovered content could not load. <a href="'+new URL('html-site.html',root)+'">Open the plain HTML archive</a>.</p>';}
+try{const response=await fetch(new URL('data.json',import.meta.url));if(!response.ok)throw Error('content');data=await response.json();syncRoute(false);if(!location.hash)arrive();}catch{panel.innerHTML='<p>The recovered content could not load. <a href="'+new URL('html-site.html',root)+'">Open the plain HTML archive</a>.</p>';}

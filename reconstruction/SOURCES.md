@@ -42,6 +42,14 @@ The missing CMS database, RSS/XML feeds and gallery XML prevent reconstruction o
 
 The readable archive, inactive old services, old-domain link rewrites and privacy protections remain. Originals, Obsidian notes, DNS and other sites are untouched.
 
+## Hidden recording restored — 2 November 2026
+
+Original `02_main.swf`, sprite 214 frame 1, assigns `slave.onRelease` to open `../video/disconnected.html` in a 360 × 100 popup. `slave` is sprite 210: the hand/string and small blue figure beside the prone boy, inside newsBox (sprite 225). The original wrapper's title is `://sally - is this mark berlin?` and its embed points to `http://sallymusic.com/offsite/markberlin.mp3`.
+
+The original MP3 was recovered from `/Web/sallymusic.com/offsite/markberlin.mp3` in the saved Dropbox archive, and copied byte-for-byte to `site/assets/audio/markberlin.mp3`. Size: 18,793,588 bytes. SHA-256: `d8fbd957f08482f42b2c9bd527c3fd684e1ec8d552babfb68dd10203dd280bb0`. Its computed Dropbox content hash matches the source: `db31eed8703ced60913761954704a4605016e8e1d0a76bc7ab802d87c299a491`. Browser playback reports 1174.465375 seconds (19:34). No transcription is added.
+
+The news-scene hotspot follows the original figure and expands to a minimum 44px touch target on small screens. A native dialog and browser audio controls replace the obsolete popup/embed. Unlike the original autoplay embed, playback is opt-in. Closing, Escape or browser Back pauses the recording and returns to the news scene; `#mark-berlin` opens the dialog directly without autoplay. Starting the recording pauses Sally Radio and ambient birds. No visual timing or original asset was changed.
+
 ## Requested slower playback — 31 October 2026
 
 The first slowdown set decorative motion to 75% of the initial reconstruction’s speed. CSS `--motion-speed: .75` controls paper transitions (480 → 640ms), speaker pulse (500 → 666.667ms per direction), and the JavaScript flying-menu/wing step (31 → 23.25 source frames per second, with fractional frame time carried forward to avoid refresh-rate quantization). The entrance WebP’s existing frame durations were multiplied by 4/3 through ANMF-header edits, preserving its compressed artwork and loop setting: 2624 → 3499ms after cumulative rounding. Its JS completion timer scales from 2700 → 3600ms. Audio and ambient playback remain at their native 1× speed; navigation, photo dialogs and other UI actions receive no delay.
