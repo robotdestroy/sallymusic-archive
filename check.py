@@ -9,7 +9,7 @@ class Page(HTMLParser):
   global links,images
   a=dict(attrs)
   if 'id' in a:self.ids.append(a['id'])
-  if t in ['iframe','form','input','object','embed'] or (t=='script' and not (self.p==root/'index.html' and a.get('src')=='experience/app.js' and a.get('type')=='module')):errors.append(f'{self.p.name}: active tag {t}')
+  if t in ['iframe','form','input','object','embed'] or (t=='script' and not (self.p==root/'index.html' and urlparse(a.get('src','')).path=='experience/app.js' and a.get('type')=='module')):errors.append(f'{self.p.name}: active tag {t}')
   if any(k.startswith('on') for k in a):errors.append(f'{self.p.name}: inline handler')
   for k in ['href','src']:
    if k not in a:continue
